@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.GregorianCalendar;
+
 import com.intech.comptabilite.model.CompteComptable;
 import com.intech.comptabilite.model.EcritureComptable;
 import com.intech.comptabilite.model.JournalComptable;
@@ -18,6 +20,12 @@ public class ComptabiliteManagerImplTest {
 
 	@Autowired
     private ComptabiliteManagerImpl manager;
+	
+	String getReference(EcritureComptable ecritureComptable, String seq) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(ecritureComptable.getDate());
+        return ecritureComptable.getJournal().getCode() + "-" + cal.get(Calendar.YEAR) + "/" + seq;
+    }
 
     @Test
     public void checkEcritureComptableUnit() throws Exception {
@@ -33,6 +41,7 @@ public class ComptabiliteManagerImplTest {
                                                                                  null, null,
                                                                                  new BigDecimal(123)));
         manager.checkEcritureComptableUnit(vEcritureComptable);
+        Assertions.assertEquals(getReference(vEcritureComptable, "00002"), vEcritureComptable.getReference());
     }
 
     @Test
@@ -86,5 +95,7 @@ public class ComptabiliteManagerImplTest {
         );
                 
     }
+    
+    
 
 }
