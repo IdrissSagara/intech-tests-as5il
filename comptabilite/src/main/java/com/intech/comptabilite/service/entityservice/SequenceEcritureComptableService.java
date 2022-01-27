@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.intech.comptabilite.model.SequenceEcritureComptable;
 import com.intech.comptabilite.model.SequenceId;
 import com.intech.comptabilite.repositories.SequenceEcritureComptableRepository;

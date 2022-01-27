@@ -11,6 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.intech.comptabilite.model.CompteComptable;
 import com.intech.comptabilite.model.EcritureComptable;
 import com.intech.comptabilite.model.LigneEcritureComptable;
+import java.math.RoundingMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
 public class EcritureComptableServiceTest {
@@ -48,6 +56,45 @@ public class EcritureComptableServiceTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
         Assertions.assertFalse(ecritureComptableService.isEquilibree(vEcriture));
+    }
+    
+    @Test
+    void getCreditTest() {
+    	// Arrange
+        EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+        
+        // Act
+        BigDecimal expected = new BigDecimal(44);
+        
+        
+        // Assert
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "20", "1"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
+
+        Assertions.assertEquals(expected.intValue(), ecritureComptableService.getTotalCredit(vEcriture).intValue());
+    }
+
+    
+    
+    @Test
+    public void getDebitTest() {
+    	// Arrange
+    	EcritureComptable vEcriture;
+    	vEcriture = new EcritureComptable();
+    	 
+    	// Act
+    	BigDecimal expected = new BigDecimal(42);
+    	 
+    	// Assert
+    	vEcriture.getListLigneEcriture().add(this.createLigne(1, "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "20", "1"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
+        
+        Assertions.assertEquals(expected.intValue(), ecritureComptableService.getTotalDebit(vEcriture).intValue());
     }
 
 }
